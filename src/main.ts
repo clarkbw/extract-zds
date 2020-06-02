@@ -8,15 +8,15 @@ async function run(): Promise<void> {
     const octokit = new github.GitHub(token);
     const context = github.context;
 
-    const filterBodies = (body: any) => body.includes('ZD-');
-    const mapZeds = (body: any) => body.match(/ZD-(\d+)/g);
+    const filterBodies = (issue: any) => issue.body.includes('ZD-');
+    const mapZeds = (issue: any) => issue.body.match(/ZD-(\d+)/g);
 
     const issue = await octokit.issues
       .get({
         ...context.repo,
         issue_number: context.issue.number
       })
-      .then(result => mapZeds(result.data.body));
+      .then(result => mapZeds(result.data));
 
     const comments = await octokit.issues
       .listComments({
