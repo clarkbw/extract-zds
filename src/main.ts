@@ -1,19 +1,37 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import * as core from '@actions/core';
+import * as github from '@actions/github';
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const token = core.getInput('token', {required: true});
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const octokit = new github.GitHub(token);
+    const context = github.context;
 
-    core.setOutput('time', new Date().toTimeString())
+    const filterBodies = (body: any) => body.includes('ZD-');
+    const mapZeds = (body: any) => body.match(/ZD-(\d+)/g);
+
+    const issue = await octokit.issues
+      .get({
+        ...context.repo,
+        issue_number: context.issue.number
+      })
+      .then(result => mapZeds(result.data.body));
+
+    const comments = await octokit.issues
+      .listComments({
+        ...context.repo,
+        issue_number: context.issue.number
+      })
+      .then(result => result.data.filter(filterBodies).map(mapZeds));
+
+    const zeds = issue.concat(comments);
+
+    core.setOutput('zeds', JSON.stringify(zeds));
+    core.setOutput('issue', `${context.issue.number}`);
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed(error.message);
   }
 }
 
-run()
+run();
