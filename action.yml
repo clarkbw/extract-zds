@@ -3,7 +3,7 @@ description: 'Extracts all the ZD- references from issue comments'
 author: '@github'
 inputs:
   token:
-    description: 'Use the ${{ secrets.GITHUB_TOKEN }} value'
+    description: 'Pass the GITHUB_TOKEN'
 runs:
   using: 'node12'
   main: 'dist/index.js'
