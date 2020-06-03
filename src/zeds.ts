@@ -16,27 +16,18 @@ export async function zeds(): Promise<void> {
         ...context.repo,
         issue_number: context.issue.number
       })
-      .then(result => {
-        console.log('RESULT', result);
-        console.log('DATA', result.data);
-        return mapZeds(result.data);
-      });
+      .then(result => mapZeds(result.data));
 
     const comments = await octokit.issues
       .listComments({
         ...context.repo,
         issue_number: context.issue.number
       })
-      .then(result => {
-        console.log('RESULT', result);
-        console.log('DATA', result.data);
-        console.log('FIRST', result.data[0]);
-        return result.data.filter(filterBodies).map(mapZeds);
-      });
+      .then(result => result.data.filter(filterBodies).map(mapZeds));
 
     const zeds = issue.concat(comments);
     console.log('ZEDS', zeds);
-    
+
     core.setOutput('zeds', JSON.stringify(zeds));
     core.setOutput('issue', `${context.issue.number}`);
   } catch (error) {
