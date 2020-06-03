@@ -11,21 +11,21 @@ export async function zeds(): Promise<void> {
     const filterBodies = (issue: any) => issue.body.includes('ZD-');
     const mapZeds = (issue: any) => issue.body.match(/ZD-(\d+)/g);
 
-    const issue = await octokit.issues
+    const issue: Array<string> = await octokit.issues
       .get({
         ...context.repo,
         issue_number: context.issue.number
       })
       .then(result => mapZeds(result.data));
 
-    const comments = await octokit.issues
+    const comments: Array<string> = await octokit.issues
       .listComments({
         ...context.repo,
         issue_number: context.issue.number
       })
       .then(result => result.data.filter(filterBodies).map(mapZeds));
 
-    const zeds = issue.concat(comments);
+    const zeds = issue.concat(comments.flat());
     console.log('ZEDS', zeds);
 
     core.setOutput('zeds', JSON.stringify(zeds));

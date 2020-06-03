@@ -23615,21 +23615,12 @@ function zeds() {
             const mapZeds = (issue) => issue.body.match(/ZD-(\d+)/g);
             const issue = yield octokit.issues
                 .get(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => {
-                console.log("RESULT", result);
-                console.log("DATA", result);
-                console.log("BODY", result.data.body);
-                return mapZeds(result.data);
-            });
+                .then(result => mapZeds(result.data));
             const comments = yield octokit.issues
                 .listComments(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => {
-                console.log("RESULT", result);
-                console.log("DATA", result);
-                console.log("FIRST", result.data[0]);
-                return result.data.filter(filterBodies).map(mapZeds);
-            });
-            const zeds = issue.concat(comments);
+                .then(result => result.data.filter(filterBodies).map(mapZeds));
+            const zeds = issue.concat(comments.flat());
+            console.log('ZEDS', zeds);
             core.setOutput('zeds', JSON.stringify(zeds));
             core.setOutput('issue', `${context.issue.number}`);
         }
