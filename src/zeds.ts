@@ -35,7 +35,8 @@ export async function zeds(): Promise<void> {
       });
 
     const zeds = issue.concat(comments);
-
+    console.log('ZEDS', zeds);
+    
     core.setOutput('zeds', JSON.stringify(zeds));
     core.setOutput('issue', `${context.issue.number}`);
   } catch (error) {
