@@ -6,7 +6,6 @@ import * as path from 'path';
 import * as issue from './issue.json';
 import * as comments from './comments.json';
 
-
 process.env['INPUT_TOKEN'] = 'TOKEN';
 process.env['GITHUB_REPOSITORY'] = 'github/c2c-packages';
 process.env['GITHUB_EVENT_PATH'] = path.join(__dirname, 'issue.json');
@@ -27,18 +26,16 @@ import {zeds} from '../src/zeds';
 //   };
 // });
 
-
 test('run main', async () => {
-  nock.disableNetConnect()
+  nock.disableNetConnect();
   nock('https://api.github.com:443')
-  .get('/repos/github/c2c-packages/issues/12345')
-  .reply(200, issue)
+    .get('/repos/github/c2c-packages/issues/12345')
+    .reply(200, issue);
 
   nock('https://api.github.com:443')
-  .get('/repos/github/c2c-packages/issues/12345/comments')
-  .reply(200, comments)
+    .get('/repos/github/c2c-packages/issues/12345/comments')
+    .reply(200, comments);
   await zeds();
-
 });
 
 // // shows how the runner will run a javascript action with env / stdout protocol

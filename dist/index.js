@@ -3510,30 +3510,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
-const github = __importStar(__webpack_require__(469));
+const zeds_1 = __webpack_require__(878);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const token = core.getInput('token', { required: true });
-            const octokit = new github.GitHub(token);
-            const context = github.context;
-            const filterBodies = (issue) => issue.body.includes('ZD-');
-            const mapZeds = (issue) => issue.body.match(/ZD-(\d+)/g);
-            const issue = yield octokit.issues
-                .get(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => mapZeds(result.data));
-            const comments = yield octokit.issues
-                .listComments(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => result.data.filter(filterBodies).map(mapZeds));
-            const zeds = issue.concat(comments);
-            core.setOutput('zeds', JSON.stringify(zeds));
-            core.setOutput('issue', `${context.issue.number}`);
+            zeds_1.zeds();
         }
         catch (error) {
             core.setFailed(error.message);
         }
     });
 }
+exports.run = run;
 run();
 
 
@@ -23589,6 +23577,68 @@ module.exports = function (str) {
 		bin + (arg ? ' ' + arg : '')
 	);
 };
+
+
+/***/ }),
+
+/***/ 878:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(470));
+const github = __importStar(__webpack_require__(469));
+function zeds() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const token = core.getInput('token', { required: true });
+            const octokit = new github.GitHub(token);
+            const context = github.context;
+            const filterBodies = (issue) => issue.body.includes('ZD-');
+            const mapZeds = (issue) => issue.body.match(/ZD-(\d+)/g);
+            const issue = yield octokit.issues
+                .get(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
+                .then(result => {
+                console.log("RESULT", result);
+                console.log("DATA", result);
+                console.log("BODY", result.data.body);
+                return mapZeds(result.data);
+            });
+            const comments = yield octokit.issues
+                .listComments(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
+                .then(result => {
+                console.log("RESULT", result);
+                console.log("DATA", result);
+                console.log("FIRST", result.data[0]);
+                return result.data.filter(filterBodies).map(mapZeds);
+            });
+            const zeds = issue.concat(comments);
+            core.setOutput('zeds', JSON.stringify(zeds));
+            core.setOutput('issue', `${context.issue.number}`);
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+exports.zeds = zeds;
 
 
 /***/ }),
