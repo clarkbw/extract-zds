@@ -3517,11 +3517,11 @@ function run() {
             const token = core.getInput('token', { required: true });
             const octokit = new github.GitHub(token);
             const context = github.context;
-            const filterBodies = (body) => body.includes('ZD-');
-            const mapZeds = (body) => body.match(/ZD-(\d+)/g);
+            const filterBodies = (issue) => issue.body.includes('ZD-');
+            const mapZeds = (issue) => issue.body.match(/ZD-(\d+)/g);
             const issue = yield octokit.issues
                 .get(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => mapZeds(result.data.body));
+                .then(result => mapZeds(result.data));
             const comments = yield octokit.issues
                 .listComments(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
                 .then(result => result.data.filter(filterBodies).map(mapZeds));
