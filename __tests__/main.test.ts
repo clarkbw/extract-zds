@@ -8,7 +8,7 @@ import * as comments from './comments.json';
 
 process.env['INPUT_TOKEN'] = 'TOKEN';
 process.env['GITHUB_REPOSITORY'] = 'github/c2c-packages';
-process.env['GITHUB_EVENT_PATH'] = path.join(__dirname, 'issue.json');
+process.env['GITHUB_EVENT_PATH'] = path.join(__dirname, 'payload.json');
 
 import {zeds} from '../src/zeds';
 

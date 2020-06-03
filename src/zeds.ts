@@ -18,8 +18,7 @@ export async function zeds(): Promise<void> {
       })
       .then(result => {
         console.log('RESULT', result);
-        console.log('DATA', result);
-        console.log('BODY', result.data.body);
+        console.log('DATA', result.data);
         return mapZeds(result.data);
       });
 
@@ -30,7 +29,7 @@ export async function zeds(): Promise<void> {
       })
       .then(result => {
         console.log('RESULT', result);
-        console.log('DATA', result);
+        console.log('DATA', result.data);
         console.log('FIRST', result.data[0]);
         return result.data.filter(filterBodies).map(mapZeds);
       });
