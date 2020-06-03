@@ -1,4 +1,7 @@
-[
+{
+    "status" : 200,
+    "url": "https://api.github.com/repos/clarkbw/extract-zds-test/issues/12345/comments",
+    "data" : [
        {
           "body" : "[ZD-707152](https://github.zendesk.com/agent/tickets/707152) is also impacted."
        },
@@ -9,4 +12,4 @@
           "body" : "ZD-709088\r\n\r\n la la al\n\r its all found in ZD-43983 and ZD-348349."
        }
     ]
- 
+ }

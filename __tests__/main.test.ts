@@ -34,7 +34,7 @@ test('run main', async () => {
 
   nock('https://api.github.com:443')
     .get('/repos/github/c2c-packages/issues/12345/comments')
-    .reply(200, comments);
+    .reply(200, comments.data);
   await zeds();
 });
 
