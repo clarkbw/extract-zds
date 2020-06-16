@@ -26,6 +26,17 @@ test('get all zeds', async () => {
 
   const b = await query();
   expect(b.length).toBe(9);
+  expect(b).toMatchObject([
+    'ZD-1',
+    'ZD-12',
+    'ZD-123',
+    'ZD-1234',
+    'ZD-12345',
+    'ZD-123456',
+    'ZD-1234567',
+    'ZD-12345678',
+    'ZD-123456789'
+  ]);
 });
 
 test('get all the bodies', async () => {

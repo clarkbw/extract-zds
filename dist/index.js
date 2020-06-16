@@ -23615,6 +23615,7 @@ function zeds() {
             const zeds = yield query();
             console.log('ZEDS', zeds);
             core.setOutput('zeds', JSON.stringify(zeds));
+            core.setOutput('length', `${zeds.length}`);
             core.setOutput('issue', `${context.issue.number}`);
         }
         catch (error) {

@@ -13,6 +13,7 @@ export async function zeds(): Promise<void> {
     console.log('ZEDS', zeds);
 
     core.setOutput('zeds', JSON.stringify(zeds));
+    core.setOutput('length', `${zeds.length}`);
     core.setOutput('issue', `${context.issue.number}`);
   } catch (error) {
     core.setFailed(error.message);

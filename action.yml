@@ -5,8 +5,12 @@ inputs:
   token:
     description: 'Pass the GITHUB_TOKEN'
 outpus:
+  issue:
+    description: 'Issue number this action was run for'
   zeds:
     description: 'Array of unique ZD-##### references found in the issue. ex: [ZD-1, ZD-2, ZD-3]'
+  length:
+    description: 'Length of the zeds array for checking in workflow control statements, ex: 3 (for above zeds example)'
 runs:
   using: 'node12'
   main: 'dist/index.js'
