@@ -4,6 +4,9 @@ author: '@github'
 inputs:
   token:
     description: 'Pass the GITHUB_TOKEN'
+outpus:
+  zeds:
+    description: 'Array of unique ZD-##### references found in the issue. ex: [ZD-1, ZD-2, ZD-3]'
 runs:
   using: 'node12'
   main: 'dist/index.js'
