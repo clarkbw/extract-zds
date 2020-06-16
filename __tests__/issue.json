@@ -1,6 +1,6 @@
 {
     "number": 12345,
-    "title": "la la la",
-    "body" : "ZD-691320, ZD-676111, ZD-669576, ZD-665148, ZD-642812, ZD-709088\n\n### Background\n\n [ZD-707152](https://github.zendesk.com/agent/tickets/707152) is also impacted."
+    "title": "la la [ZD-1] la",
+    "body" : "ZD-12, ZD-123, ZD-1234, ZD-12345, ZD-123456, ZD-1234567\n\n### Background\n\n [this ticket](https://github.zendesk.com/agent/tickets/12345678) is also impacted."
 
  }
