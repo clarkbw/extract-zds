@@ -42,7 +42,7 @@ export async function query(): Promise<Array<string>> {
         })
         .flat()
     ).keys()
-  ];
+  ].sort();
 }
 
 export async function bodies(octokit: github.GitHub): Promise<Array<string>> {

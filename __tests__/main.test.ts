@@ -25,7 +25,7 @@ test('get all zeds', async () => {
     .reply(200, comments.data);
 
   const b = await query();
-  expect(b.length).toBe(8);
+  expect(b.length).toBe(9);
 });
 
 test('get all the bodies', async () => {

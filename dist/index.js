@@ -23605,21 +23605,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
+// export const ZD_REGEX = /ZD-(\d+)|github\.zendesk\.com\/agent\/tickets\/(\d+)/;
+exports.ZD_REGEX = /ZD-(\d+)/g;
+exports.ZD_URL_REGEX = /github\.zendesk\.com\/agent\/tickets\/(\d+)/g;
 function zeds() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const token = core.getInput('token', { required: true });
-            const octokit = new github.GitHub(token);
             const context = github.context;
-            const filterBodies = (issue) => issue.body.includes('ZD-');
-            const mapZeds = (issue) => issue.body.match(/ZD-(\d+)/g);
-            const issue = yield octokit.issues
-                .get(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => mapZeds(result.data));
-            const comments = yield octokit.issues
-                .listComments(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
-                .then(result => result.data.filter(filterBodies).map(mapZeds));
-            const zeds = issue.concat(comments.flat());
+            const zeds = yield query();
             console.log('ZEDS', zeds);
             core.setOutput('zeds', JSON.stringify(zeds));
             core.setOutput('issue', `${context.issue.number}`);
@@ -23630,6 +23623,40 @@ function zeds() {
     });
 }
 exports.zeds = zeds;
+function query() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const token = core.getInput('token', { required: true });
+        const octokit = new github.GitHub(token);
+        const context = github.context;
+        let zeds = yield bodies(octokit);
+        return [
+            ...new Set(zeds
+                .map((issue) => {
+                let matches = [];
+                const shorthands = [...issue.matchAll(exports.ZD_REGEX)];
+                matches = matches.concat(shorthands.map((m) => m[0]));
+                const urls = [...issue.matchAll(exports.ZD_URL_REGEX)];
+                matches = matches.concat(urls.map((m) => `ZD-${m[1]}`));
+                return matches;
+            })
+                .flat()).keys()
+        ].sort();
+    });
+}
+exports.query = query;
+function bodies(octokit) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const context = github.context;
+        const issue = yield octokit.issues
+            .get(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
+            .then(result => [result.data.title, result.data.body]);
+        const comments = yield octokit.issues
+            .listComments(Object.assign(Object.assign({}, context.repo), { issue_number: context.issue.number }))
+            .then(result => result.data.map(i => i.body));
+        return comments.concat(issue);
+    });
+}
+exports.bodies = bodies;
 
 
 /***/ }),
