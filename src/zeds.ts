@@ -13,6 +13,7 @@ export async function zeds(): Promise<void> {
     console.log('ZEDS', zeds);
 
     core.setOutput('zeds', JSON.stringify(zeds));
+    // https://github.community/t/getting-object-length/17802/3
     core.setOutput('length', `${zeds.length}`);
     core.setOutput('issue', `${context.issue.number}`);
   } catch (error) {
