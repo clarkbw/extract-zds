@@ -2,6 +2,8 @@
 
 This looks for all GitHub Zendesk references within an issue.  It tries to find the `github.zendesk.com` domain based links.
 
+This Action is for composability and doesn't take any action itself but outputs what it finds for you.
+
 - `steps.id.outputs.length` is the number of unique references
 - `steps.id.outputs.zeds` is the list of unique references in the format `[ZD-670378,ZD-782708]`
 
